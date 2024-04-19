@@ -30,6 +30,5 @@ public class EmailRequest {
     @NotNull
     private ZoneId timeZone;
 
-    @Email
     private List<String> cc;
 }

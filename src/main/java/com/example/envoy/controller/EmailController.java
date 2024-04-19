@@ -2,8 +2,7 @@ package com.example.envoy.controller;
 
 import com.example.envoy.dto.EmailRequest;
 import com.example.envoy.dto.EmailResponse;
-import com.example.envoy.job.EmailJob;
-import com.google.gson.Gson;
+import com.example.envoy.job.JobUtils;
 import jakarta.validation.Valid;
 import org.quartz.*;
 import org.slf4j.Logger;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/envoy")
@@ -27,6 +24,9 @@ public class EmailController {
 
     @Autowired
     private Scheduler scheduler;
+
+    @Autowired
+    private JobUtils jobUtils;
 
     @PostMapping("/scheduleEmail")
     public ResponseEntity<EmailResponse> scheduleEmail(@Valid @RequestBody EmailRequest scheduleEmailRequest) {
@@ -38,15 +38,15 @@ public class EmailController {
                 return ResponseEntity.badRequest().body(scheduleEmailResponse);
             }
 
-            JobDetail jobDetail = buildJobDetail(scheduleEmailRequest);
-            Trigger trigger = buildJobTrigger(jobDetail, dateTime);
+            JobDetail jobDetail = jobUtils.buildJobDetail(scheduleEmailRequest);
+            Trigger trigger = jobUtils.buildJobTrigger(jobDetail, dateTime);
             scheduler.scheduleJob(jobDetail, trigger);
 
             EmailResponse scheduleEmailResponse = new EmailResponse(true,
                     jobDetail.getKey().getName(), jobDetail.getKey().getGroup(), "Email Scheduled Successfully!");
             return ResponseEntity.ok(scheduleEmailResponse);
         } catch (SchedulerException ex) {
-            logger.error("Error scheduling email", ex);
+            logger.error("Error scheduling email.", ex);
 
             EmailResponse scheduleEmailResponse = new EmailResponse(false,
                     "Error scheduling email. Please try later!");
@@ -54,34 +54,5 @@ public class EmailController {
         }
     }
 
-    private JobDetail buildJobDetail(EmailRequest scheduleEmailRequest) {
-        JobDataMap jobDataMap = new JobDataMap();
 
-        jobDataMap.put("to", scheduleEmailRequest.getTo());
-        jobDataMap.put("subject", scheduleEmailRequest.getSubject());
-        jobDataMap.put("body", scheduleEmailRequest.getBody());
-
-        // convert from string array to string
-        if(!scheduleEmailRequest.getCc().isEmpty()) {
-            String ccString = new Gson().toJson(scheduleEmailRequest.getCc());
-            jobDataMap.put("cc", ccString);
-        }
-
-        return JobBuilder.newJob(EmailJob.class)
-                .withIdentity(UUID.randomUUID().toString(), "email-jobs")
-                .withDescription("Send Email Job")
-                .usingJobData(jobDataMap)
-                .storeDurably()
-                .build();
-    }
-
-    private Trigger buildJobTrigger(JobDetail jobDetail, ZonedDateTime startAt) {
-        return TriggerBuilder.newTrigger()
-                .forJob(jobDetail)
-                .withIdentity(jobDetail.getKey().getName(), "email-triggers")
-                .withDescription("Send Email Trigger")
-                .startAt(Date.from(startAt.toInstant()))
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule().withMisfireHandlingInstructionFireNow())
-                .build();
-    }
 }
