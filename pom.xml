@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>mailmaster</artifactId>
+	<artifactId>envoy</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mailmaster</name>
+	<name>envoy</name>
 	<description>api for sending, scheduling and tracking emails</description>
 	<properties>
 		<java.version>17</java.version>

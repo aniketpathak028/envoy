@@ -1,11 +1,10 @@
-package com.example.mailmaster.controller;
+package com.example.envoy.controller;
 
-import com.example.mailmaster.dto.EmailRequest;
-import com.example.mailmaster.dto.EmailResponse;
-import com.example.mailmaster.job.EmailJob;
+import com.example.envoy.dto.EmailRequest;
+import com.example.envoy.dto.EmailResponse;
+import com.example.envoy.job.EmailJob;
 import com.google.gson.Gson;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,9 +21,9 @@ import java.util.Date;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/mailmaster")
-public class EmailScheduler {
-    private static final Logger logger = LoggerFactory.getLogger(EmailScheduler.class);
+@RequestMapping("/envoy")
+public class EmailController {
+    private static final Logger logger = LoggerFactory.getLogger(EmailController.class);
 
     @Autowired
     private Scheduler scheduler;

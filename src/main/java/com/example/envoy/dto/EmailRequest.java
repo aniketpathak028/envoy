@@ -1,4 +1,4 @@
-package com.example.mailmaster.dto;
+package com.example.envoy.dto;
 
 
 import jakarta.validation.constraints.Email;

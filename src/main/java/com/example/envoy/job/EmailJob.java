@@ -1,4 +1,4 @@
-package com.example.mailmaster.job;
+package com.example.envoy.job;
 
 import com.google.gson.Gson;
 import jakarta.mail.MessagingException;

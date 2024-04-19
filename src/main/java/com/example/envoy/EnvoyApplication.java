@@ -1,13 +1,13 @@
-package com.example.mailmaster;
+package com.example.envoy;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MailmasterApplication {
+public class EnvoyApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MailmasterApplication.class, args);
+		SpringApplication.run(EnvoyApplication.class, args);
 	}
 
 }

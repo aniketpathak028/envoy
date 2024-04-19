@@ -1,4 +1,4 @@
-package com.example.mailmaster.dto;
+package com.example.envoy.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
