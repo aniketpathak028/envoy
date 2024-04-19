@@ -1,5 +1,6 @@
 package com.example.mailmaster.job;
 
+import com.google.gson.Gson;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.quartz.JobDataMap;
@@ -33,10 +34,13 @@ public class EmailJob extends QuartzJobBean {
         String body = jobDataMap.getString("body");
         String recipientEmail = jobDataMap.getString("email");
 
-        sendMail(mailProperties.getUsername(), recipientEmail, subject, body);
+        String ccString= jobDataMap.getString("cc");
+        String[] ccArray= new Gson().fromJson(ccString,String[].class);
+
+        sendMail(mailProperties.getUsername(), recipientEmail, subject, body, ccArray);
     }
 
-    private void sendMail(String fromEmail, String toEmail, String subject, String body) {
+    private void sendMail(String fromEmail, String toEmail, String subject, String body, String[] cc) {
         try {
             logger.info("Sending Email to {}", toEmail);
             MimeMessage message = mailSender.createMimeMessage();
@@ -46,6 +50,8 @@ public class EmailJob extends QuartzJobBean {
             messageHelper.setText(body, true);
             messageHelper.setFrom(fromEmail);
             messageHelper.setTo(toEmail);
+
+            messageHelper.setCc(cc);
 
             mailSender.send(message);
         } catch (MessagingException ex) {

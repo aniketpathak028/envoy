@@ -3,6 +3,7 @@ package com.example.mailmaster.controller;
 import com.example.mailmaster.dto.EmailRequest;
 import com.example.mailmaster.dto.EmailResponse;
 import com.example.mailmaster.job.EmailJob;
+import com.google.gson.Gson;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import org.quartz.*;
@@ -57,9 +58,15 @@ public class EmailScheduler {
     private JobDetail buildJobDetail(EmailRequest scheduleEmailRequest) {
         JobDataMap jobDataMap = new JobDataMap();
 
-        jobDataMap.put("email", scheduleEmailRequest.getEmail());
+        jobDataMap.put("to", scheduleEmailRequest.getTo());
         jobDataMap.put("subject", scheduleEmailRequest.getSubject());
         jobDataMap.put("body", scheduleEmailRequest.getBody());
+
+        // convert from string array to string
+        if(!scheduleEmailRequest.getCc().isEmpty()) {
+            String ccString = new Gson().toJson(scheduleEmailRequest.getCc());
+            jobDataMap.put("cc", ccString);
+        }
 
         return JobBuilder.newJob(EmailJob.class)
                 .withIdentity(UUID.randomUUID().toString(), "email-jobs")

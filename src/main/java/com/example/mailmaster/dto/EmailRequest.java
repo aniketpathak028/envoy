@@ -9,13 +9,14 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @Getter
 @Setter
 public class EmailRequest {
     @Email
     @NotEmpty
-    private String email;
+    private String to;
 
     @NotEmpty
     private String subject;
@@ -28,4 +29,7 @@ public class EmailRequest {
 
     @NotNull
     private ZoneId timeZone;
+
+    @Email
+    private List<String> cc;
 }
