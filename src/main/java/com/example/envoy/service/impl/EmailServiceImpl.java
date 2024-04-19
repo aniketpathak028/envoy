@@ -24,7 +24,6 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
-
     @Override
     public ResponseEntity<EmailResponse> sendMail(String fromEmail, String toEmail, String subject, String body, String[] cc, String[] bcc) {
         try {
@@ -51,5 +50,19 @@ public class EmailServiceImpl implements EmailService {
                     "Error sending email. Please try later!");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(scheduleEmailResponse);
         }
+    }
+
+    @Override
+    public void trackMail(String uniqueIdentifier) {
+        //call db with the identifier.
+        //get the email ids
+        //send email
+        //subject: Your email is opened.
+        //body: Your email with subject "subject" to "to" email is being opened at "time".
+    }
+
+    private String generateUniqueIdentifier(String to, String trackEmail, String subject) {
+        //add in db. get the id. convert to string and then return
+        return "";
     }
 }

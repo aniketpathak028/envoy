@@ -13,7 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class EmailRequest {
+public class EmailScheduleRequest {
     @Email
     @NotEmpty
     private String to;

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Service;
 
 public interface EmailService {
     ResponseEntity<EmailResponse> sendMail(String fromEmail, String toEmail, String subject, String body, String[] cc, String[] bcc);
+    void trackMail(String uniqueIdentifier);
 }

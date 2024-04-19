@@ -1,6 +1,6 @@
 package com.example.envoy.job;
 
-import com.example.envoy.dto.EmailRequest;
+import com.example.envoy.dto.EmailScheduleRequest;
 import com.google.gson.Gson;
 import org.quartz.*;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import java.util.UUID;
 @Service
 public class JobUtils {
 
-    public JobDetail buildJobDetail(EmailRequest scheduleEmailRequest) {
+    public JobDetail buildJobDetail(EmailScheduleRequest scheduleEmailRequest) {
         JobDataMap jobDataMap = new JobDataMap();
 
         jobDataMap.put("to", scheduleEmailRequest.getTo());
