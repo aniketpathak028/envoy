@@ -20,9 +20,14 @@ public class JobUtils {
         jobDataMap.put("body", scheduleEmailRequest.getBody());
 
         // convert from string array to string
-        if(!scheduleEmailRequest.getCc().isEmpty()) {
+        if(scheduleEmailRequest.getCc() != null) {
             String ccString = new Gson().toJson(scheduleEmailRequest.getCc());
             jobDataMap.put("cc", ccString);
+        }
+
+        if(scheduleEmailRequest.getBcc() != null) {
+            String bccString = new Gson().toJson(scheduleEmailRequest.getBcc());
+            jobDataMap.put("bcc", bccString);
         }
 
         return JobBuilder.newJob(EmailJob.class)

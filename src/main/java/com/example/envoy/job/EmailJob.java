@@ -30,9 +30,17 @@ public class EmailJob extends QuartzJobBean {
         String body = jobDataMap.getString("body");
         String to = jobDataMap.getString("to");
 
-        String ccString= jobDataMap.getString("cc");
-        String[] ccArray= new Gson().fromJson(ccString,String[].class);
+        String[] ccArray = new String[0];
+        if(jobDataMap.containsKey("cc")){
+            ccArray= new Gson().fromJson(jobDataMap.getString("cc"),String[].class);
+        }
 
-        emailService.sendMail(mailProperties.getUsername(), to, subject, body, ccArray);
+        String[] bccArray = new String[0];
+        if(jobDataMap.containsKey("bcc")){
+            bccArray= new Gson().fromJson(jobDataMap.getString("bcc"),String[].class);
+        }
+
+        emailService.sendMail(mailProperties.getUsername(), to, subject, body, ccArray, bccArray);
+
     }
 }

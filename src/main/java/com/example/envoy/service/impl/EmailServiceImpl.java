@@ -26,12 +26,7 @@ public class EmailServiceImpl implements EmailService {
 
 
     @Override
-    public ResponseEntity<EmailResponse> sendMail(String fromEmail, String toEmail, String subject, String body) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<EmailResponse> sendMail(String fromEmail, String toEmail, String subject, String body, String[] cc) {
+    public ResponseEntity<EmailResponse> sendMail(String fromEmail, String toEmail, String subject, String body, String[] cc, String[] bcc) {
         try {
             logger.info("Sending Email to {}", toEmail);
             MimeMessage message = mailSender.createMimeMessage();
@@ -42,6 +37,7 @@ public class EmailServiceImpl implements EmailService {
             messageHelper.setFrom(fromEmail);
             messageHelper.setTo(toEmail);
             messageHelper.setCc(cc);
+            messageHelper.setBcc(bcc);
 
             mailSender.send(message);
 
@@ -55,15 +51,5 @@ public class EmailServiceImpl implements EmailService {
                     "Error sending email. Please try later!");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(scheduleEmailResponse);
         }
-    }
-
-    @Override
-    public ResponseEntity<EmailResponse> sendMail(String fromEmail, String toEmail, String subject, String[] bcc, String body) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<EmailResponse> sendMail(String fromEmail, String toEmail, String subject, String body, String[] cc, String[] bcc) {
-        return null;
     }
 }
