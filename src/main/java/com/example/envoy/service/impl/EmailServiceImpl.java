@@ -1,7 +1,8 @@
 package com.example.envoy.service.impl;
 
-import com.example.envoy.controller.EmailController;
 import com.example.envoy.dto.EmailResponse;
+import com.example.envoy.model.EmailTrackRequest;
+import com.example.envoy.repository.EmailTrackRepository;
 import com.example.envoy.service.EmailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -13,8 +14,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import java.time.format.DateTimeFormatter;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
+
 
 @Service
 public class EmailServiceImpl implements EmailService {
@@ -24,21 +28,38 @@ public class EmailServiceImpl implements EmailService {
     @Autowired
     private JavaMailSender mailSender;
 
+    @Autowired
+    private EmailTrackRepository emailTrackRepository;
+
     @Override
-    public ResponseEntity<EmailResponse> sendMail(String fromEmail, String toEmail, String subject, String body, String[] cc, String[] bcc) {
+    public ResponseEntity<EmailResponse> sendMail(String fromEmail, String toEmail, String subject, String body, String[] cc, String[] bcc, String trackEmail) {
         try {
             logger.info("Sending Email to {}", toEmail);
             MimeMessage message = mailSender.createMimeMessage();
 
             MimeMessageHelper messageHelper = new MimeMessageHelper(message, StandardCharsets.UTF_8.toString());
-            messageHelper.setSubject(subject);
-            messageHelper.setText(body, true);
+
             messageHelper.setFrom(fromEmail);
             messageHelper.setTo(toEmail);
             messageHelper.setCc(cc);
             messageHelper.setBcc(bcc);
+            messageHelper.setSubject(subject);
+            messageHelper.setText(body, true);
 
+            if(trackEmail!=null){
+                String uniqueIdentifier = generateUniqueIdentifier(
+                        new EmailTrackRequest(toEmail, trackEmail, subject)
+                );
+
+                String trackingPixelUrl = "https://spring-email-production.up.railway.app/mail/track?id=" + uniqueIdentifier;
+                //String trackingPixelUrl = "http://localhost:8081/mail/track?id=emailUnga";
+                String trackedBody = body + "<img src=\"" + trackingPixelUrl + "\">";
+                messageHelper.setText(trackedBody, true);
+            }
+
+            logger.info("Before time: {}", LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
             mailSender.send(message);
+            logger.info("After time: {}", LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
 
             EmailResponse scheduleEmailResponse = new EmailResponse(true, "Email sent successfully");
             return ResponseEntity.ok(scheduleEmailResponse);
@@ -61,8 +82,8 @@ public class EmailServiceImpl implements EmailService {
         //body: Your email with subject "subject" to "to" email is being opened at "time".
     }
 
-    private String generateUniqueIdentifier(String to, String trackEmail, String subject) {
-        //add in db. get the id. convert to string and then return
-        return "";
+    private String generateUniqueIdentifier(EmailTrackRequest etr) {
+        EmailTrackRequest savedEntity = emailTrackRepository.save(etr);
+        return Long.toString(savedEntity.getId());
     }
 }

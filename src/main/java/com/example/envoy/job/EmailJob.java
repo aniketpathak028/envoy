@@ -40,7 +40,12 @@ public class EmailJob extends QuartzJobBean {
             bccArray= new Gson().fromJson(jobDataMap.getString("bcc"),String[].class);
         }
 
-        emailService.sendMail(mailProperties.getUsername(), to, subject, body, ccArray, bccArray);
+        String trackEmail = null;
+        if(jobDataMap.containsKey("trackEmail")) {
+            trackEmail = jobDataMap.getString("trackEmail");
+        }
+
+        emailService.sendMail(mailProperties.getUsername(), to, subject, body, ccArray, bccArray, trackEmail);
 
     }
 }

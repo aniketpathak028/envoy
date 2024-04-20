@@ -30,6 +30,10 @@ public class JobUtils {
             jobDataMap.put("bcc", bccString);
         }
 
+        if(scheduleEmailRequest.getTrackEmail() != null) {
+            jobDataMap.put("trackEmail", scheduleEmailRequest.getTrackEmail());
+        }
+
         return JobBuilder.newJob(EmailJob.class)
                 .withIdentity(UUID.randomUUID().toString(), "email-jobs")
                 .withDescription("Send Email Job")

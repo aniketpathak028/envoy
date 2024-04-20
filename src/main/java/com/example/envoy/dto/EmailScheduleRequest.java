@@ -1,6 +1,7 @@
 package com.example.envoy.dto;
 
 
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -33,4 +34,6 @@ public class EmailScheduleRequest {
     private List<@Email String> cc;
 
     private List<@Email String> bcc;
+
+    private String trackEmail;
 }

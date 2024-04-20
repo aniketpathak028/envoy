@@ -80,7 +80,8 @@ public class EmailController {
                 sendEmailRequest.getSubject(),
                 sendEmailRequest.getBody(),
                 ccArray,
-                bccArray
+                bccArray,
+                sendEmailRequest.getTrackEmail()
         );
     }
 
