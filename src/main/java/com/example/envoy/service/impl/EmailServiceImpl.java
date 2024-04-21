@@ -9,6 +9,7 @@ import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.mail.MailProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,12 +19,16 @@ import java.time.format.DateTimeFormatter;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
+import java.util.Optional;
 
 
 @Service
 public class EmailServiceImpl implements EmailService {
 
     private static final Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
+
+    @Autowired
+    private MailProperties mailProperties;
 
     @Autowired
     private JavaMailSender mailSender;
@@ -75,11 +80,12 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void trackMail(String uniqueIdentifier) {
-        //call db with the identifier.
-        //get the email ids
-        //send email
-        //subject: Your email is opened.
-        //body: Your email with subject "subject" to "to" email is being opened at "time".
+        Optional<EmailTrackRequest> dbEntry = emailTrackRepository.findById(Long.parseLong(uniqueIdentifier));
+        dbEntry.ifPresent(entry -> {
+            String trackingEmail = entry.getTrackEmail();
+            String body = "Your Email with subject `"+ entry.getSubject()+ "` to " + entry.getTo() + " is being opened now.";
+            sendMail(mailProperties.getUsername(), trackingEmail,"Your Email was opened", body, new String[0] , new String[0], null);
+        });
     }
 
     private String generateUniqueIdentifier(EmailTrackRequest etr) {
