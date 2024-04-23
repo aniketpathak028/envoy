@@ -55,7 +55,7 @@ public class EmailServiceImpl implements EmailService {
                         new EmailTrackRequest(toEmail, trackEmail, subject)
                 );
 
-                String trackingPixelUrl = "https://spring-email-production.up.railway.app/api/v1/track?id=" + uniqueIdentifier;
+                String trackingPixelUrl = "https://envoy-api.up.railway.app/api/v1/track?id=" + uniqueIdentifier;
                 String trackedBody = body + "<img src=\"" + trackingPixelUrl + "\">";
                 messageHelper.setText(trackedBody, true);
             }
