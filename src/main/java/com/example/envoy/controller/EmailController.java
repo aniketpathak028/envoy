@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.time.ZonedDateTime;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("")
 public class EmailController {
     private static final Logger logger = LoggerFactory.getLogger(EmailController.class);
 
@@ -36,7 +36,13 @@ public class EmailController {
     @Autowired
     private MailProperties mailProperties;
 
-    @PostMapping("/schedule")
+    @GetMapping("/")
+    public String homePage(){
+        return "Welcome to Envoy!";
+    }
+
+
+    @PostMapping("/api/v1/schedule")
     public ResponseEntity<EmailResponse> scheduleEmail(@Valid @RequestBody EmailScheduleRequest scheduleEmailRequest) {
         try {
             ZonedDateTime dateTime = ZonedDateTime.of(scheduleEmailRequest.getDateTime(), scheduleEmailRequest.getTimeZone());
@@ -62,7 +68,7 @@ public class EmailController {
         }
     }
 
-    @PostMapping("/send")
+    @PostMapping("/api/v1/send")
     public ResponseEntity<EmailResponse> sendEmail(@Valid @RequestBody EmailSendRequest sendEmailRequest) {
         String[] ccArray = new String[0];
         if(sendEmailRequest.getCc()!= null){
@@ -93,7 +99,7 @@ public class EmailController {
         }
     }
 
-    @GetMapping("/track")
+    @GetMapping("/api/v1/track")
     public ResponseEntity<byte[]> getImage(@RequestParam("id") String uniqueIdentifier) throws IOException {
         String imageUrl = "https://sohamdutta-portfolio.s3.ap-south-1.amazonaws.com/opengraph-image.jpg"; //should be changed later
 

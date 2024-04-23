@@ -35,5 +35,6 @@ public class EmailScheduleRequest {
 
     private List<@Email String> bcc;
 
+    @Email
     private String trackEmail;
 }
