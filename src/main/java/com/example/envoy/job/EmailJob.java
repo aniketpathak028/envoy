@@ -2,6 +2,7 @@ package com.example.envoy.job;
 
 import com.example.envoy.service.EmailService;
 import com.google.gson.Gson;
+import jakarta.mail.MessagingException;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -45,7 +46,11 @@ public class EmailJob extends QuartzJobBean {
             trackEmail = jobDataMap.getString("trackEmail");
         }
 
-        emailService.sendMail(mailProperties.getUsername(), to, subject, body, ccArray, bccArray, trackEmail);
+        try {
+            emailService.sendMail(mailProperties.getUsername(), to, subject, body, ccArray, bccArray, trackEmail);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 }

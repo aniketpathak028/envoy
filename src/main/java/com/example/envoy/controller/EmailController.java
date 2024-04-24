@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.time.ZonedDateTime;
 
 @RestController
-@RequestMapping("/envoy")
+@RequestMapping("")
 public class EmailController {
     private static final Logger logger = LoggerFactory.getLogger(EmailController.class);
 
@@ -36,7 +36,13 @@ public class EmailController {
     @Autowired
     private MailProperties mailProperties;
 
-    @PostMapping("/scheduleEmail")
+    @GetMapping("/")
+    public String homePage(){
+        return "Welcome to Envoy!";
+    }
+
+
+    @PostMapping("/api/v1/schedule")
     public ResponseEntity<EmailResponse> scheduleEmail(@Valid @RequestBody EmailScheduleRequest scheduleEmailRequest) {
         try {
             ZonedDateTime dateTime = ZonedDateTime.of(scheduleEmailRequest.getDateTime(), scheduleEmailRequest.getTimeZone());
@@ -62,7 +68,7 @@ public class EmailController {
         }
     }
 
-    @PostMapping("/sendEmail")
+    @PostMapping("/api/v1/send")
     public ResponseEntity<EmailResponse> sendEmail(@Valid @RequestBody EmailSendRequest sendEmailRequest) {
         String[] ccArray = new String[0];
         if(sendEmailRequest.getCc()!= null){
@@ -74,20 +80,27 @@ public class EmailController {
             bccArray= sendEmailRequest.getBcc().toArray(new String[0]);
         }
 
-        return emailService.sendMail(
-                mailProperties.getUsername(),
-                sendEmailRequest.getTo(),
-                sendEmailRequest.getSubject(),
-                sendEmailRequest.getBody(),
-                ccArray,
-                bccArray,
-                sendEmailRequest.getTrackEmail()
-        );
+        try{
+            emailService.sendMail(
+                    mailProperties.getUsername(),
+                    sendEmailRequest.getTo(),
+                    sendEmailRequest.getSubject(),
+                    sendEmailRequest.getBody(),
+                    ccArray,
+                    bccArray,
+                    sendEmailRequest.getTrackEmail()
+            );
+            EmailResponse sendEmailResponse = new EmailResponse(true, "Email sent successfully");
+            return ResponseEntity.ok(sendEmailResponse);
+        } catch(Exception e){
+            EmailResponse sendEmailResponse = new EmailResponse(false,
+                    "Error sending email. Please try later!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(sendEmailResponse);
+        }
     }
 
-    @GetMapping("/track")
+    @GetMapping("/api/v1/track")
     public ResponseEntity<byte[]> getImage(@RequestParam("id") String uniqueIdentifier) throws IOException {
-        System.out.println("The identifier is : " + uniqueIdentifier);
         String imageUrl = "https://sohamdutta-portfolio.s3.ap-south-1.amazonaws.com/opengraph-image.jpg"; //should be changed later
 
         emailService.trackMail(uniqueIdentifier);

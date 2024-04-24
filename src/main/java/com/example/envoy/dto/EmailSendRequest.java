@@ -26,6 +26,7 @@ public class EmailSendRequest {
 
         private List<@Email String> bcc;
 
+        @Email
         private String trackEmail;
 
 }
