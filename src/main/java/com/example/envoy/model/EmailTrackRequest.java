@@ -23,10 +23,14 @@ public class EmailTrackRequest {
     @Column(name = "subject")
     String subject;
 
-    public EmailTrackRequest(String toEmail, String trackEmail, String subject) {
+    @Column(name = "is_opened")
+    Boolean isOpened;
+
+    public EmailTrackRequest(String toEmail, String trackEmail, String subject, Boolean isOpened) {
         this.to = toEmail;
         this.trackEmail = trackEmail;
         this.subject = subject;
+        this.isOpened = isOpened;
     }
 
 }
