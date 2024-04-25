@@ -13,6 +13,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.nio.charset.StandardCharsets;
@@ -69,7 +71,7 @@ public class EmailServiceImpl implements EmailService {
         dbEntry.ifPresent(entry -> {
             if(!entry.getIsOpened()){
                 String trackingEmail = entry.getTrackEmail();
-                String body = entry.getTo() + " just opened your email with the subject '" + entry.getSubject() +"'."+ "<br/>" + "Read on " + LocalTime.now().format(DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a"));
+                String body = entry.getTo() + " just opened your email with the subject '" + entry.getSubject() +"'."+ "<br/>" + "Read on " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a"));
                 try {
                     sendMail(mailProperties.getUsername(), trackingEmail,"Your email was just read", body, new String[0] , new String[0], null);
                     entry.setIsOpened(true);
