@@ -3,6 +3,21 @@
 </div>
 <br>
 
+<div align="center">
+
+<img alt="GitHub" src="https://img.shields.io/github/license/aniketpathak028/envoy?style=plastic">
+
+<img alt="GitHub release (latest by date including pre-releases" src="https://img.shields.io/github/v/release/aniketpathak028/envoy?include_prereleases">
+
+<img alt="GitHub top language" src="https://img.shields.io/github/languages/top/aniketpathak028/envoy?style=plastic">
+
+<img alt="GitHub Repo forks" src="https://img.shields.io/github/forks/aniketpathak028/envoy?style=plastic">
+
+<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/aniketpathak028/envoy?style=plastic">
+
+<img alt="GitHub Repo stars" src="https://img.shields.io/github/contributors-anon/aniketpathak028/envoy">
+</div>
+
 # Envoy
 
 Welcome to Envoy - your all-in-one email management solution to schedule and track emails! 💌
