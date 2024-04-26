@@ -58,6 +58,15 @@ Welcome to Envoy - your all-in-one email management solution to schedule and tra
 }
 ```
 
+#### Response
+
+```json
+{
+    "success": true,
+    "message": "Email sent successfully"
+}
+```
+
 #### Schedule an Email
 
 ```http
@@ -70,7 +79,7 @@ Welcome to Envoy - your all-in-one email management solution to schedule and tra
 | `subject`    | `string` | **Required**. Subject                                     |
 | `body`       | `string` | **Required**. Body                                        |
 | `dateTime`   | `time`   | **Required**. Scheduled time                              |
-| `zoneId`     | `string` | **Required**. Sender's zone id                            |
+| `timeZone`   | `string` | **Required**. Sender's zone id                            |
 | `cc`         | `array`  | **Optional**. Cc list                                     |
 | `bcc`        | `array`  | **Optional**. Bcc list                                    |
 | `trackEmail` | `email`  | **Optional**. Email address to recieve track notification |
@@ -90,17 +99,29 @@ Welcome to Envoy - your all-in-one email management solution to schedule and tra
 }
 ```
 
+#### Response
+
+```json
+{
+  "success": true,
+  "jobId": "96db0d1b-608c-4cba-8f76-19924e90b3ba",
+  "jobGroup": "email-jobs",
+  "message": "Email Scheduled Successfully!"
+}
+```
+
+
 ## Project Created & Maintained By
 
 ### Aniket Pathak
 
-<a href="https://www.linkedin.com/in/aniket-pathak-8925311b5/"><img src="https://github.com/aritraroy/social-icons/blob/master/linkedin-icon.png?raw=true" width="60"></a> <a href="https://www.instagram.com/anik3t_pathak/"><img src="https://github.com/aritraroy/social-icons/blob/master/instagram-icon.png?raw=true" width="60"></a>
+<a href="https://www.linkedin.com/in/aniket-pathak-8925311b5/"><img src="https://github.com/aritraroy/social-icons/blob/master/linkedin-icon.png?raw=true" width="60"></a> <a href="https://twitter.com/AniketP51335534"><img src="https://github.com/aritraroy/social-icons/blob/master/twitter-icon.png?raw=true" width="60"></a>
 
 [![GitHub followers](https://img.shields.io/github/followers/aniketpathak028.svg?style=social&label=Follow)](https://github.com/aniketpathak028/)
 
 ### Soham Dutta
 
-<a href="https://www.linkedin.com/in/shm-dtt/"><img src="https://github.com/aritraroy/social-icons/blob/master/linkedin-icon.png?raw=true" width="60"></a> <a href="https://www.instagram.com/shm_dtt/"><img src="https://github.com/aritraroy/social-icons/blob/master/instagram-icon.png?raw=true" width="60"></a>
+<a href="https://www.linkedin.com/in/shm-dtt/"><img src="https://github.com/aritraroy/social-icons/blob/master/linkedin-icon.png?raw=true" width="60"></a> <a href="https://twitter.com/shmdsgn"><img src="https://github.com/aritraroy/social-icons/blob/master/twitter-icon.png?raw=true" width="60"></a>
 
 [![GitHub followers](https://img.shields.io/github/followers/shm-dsgn.svg?style=social&label=Follow)](https://github.com/shm-dsgn/)
 
