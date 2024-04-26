@@ -71,7 +71,7 @@ public class EmailServiceImpl implements EmailService {
         dbEntry.ifPresent(entry -> {
             if(!entry.getIsOpened()){
                 String trackingEmail = entry.getTrackEmail();
-                String body = entry.getTo() + " just opened your email with the subject '" + entry.getSubject() +"'."+ "<br/>" + "Read on " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMM dd, yyyy hh:mm a"));
+                String body = entry.getTo() + " just opened your email with the subject '" + entry.getSubject() +"'.";
                 try {
                     sendMail(mailProperties.getUsername(), trackingEmail,"Your email was just read", body, new String[0] , new String[0], null);
                     entry.setIsOpened(true);
