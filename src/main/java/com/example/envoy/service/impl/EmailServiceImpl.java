@@ -13,6 +13,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.nio.charset.StandardCharsets;
@@ -52,7 +54,7 @@ public class EmailServiceImpl implements EmailService {
 
             if(trackEmail!=null){
                 String uniqueIdentifier = generateUniqueIdentifier(
-                        new EmailTrackRequest(toEmail, trackEmail, subject)
+                        new EmailTrackRequest(toEmail, trackEmail, subject, false)
                 );
 
                 String trackingPixelUrl = "https://envoy-api.up.railway.app/api/v1/track?id=" + uniqueIdentifier;
@@ -60,21 +62,23 @@ public class EmailServiceImpl implements EmailService {
                 messageHelper.setText(trackedBody, true);
             }
 
-            //logger.info("Before time: {}", LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
             mailSender.send(message);
-            //logger.info("After time: {}", LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
     }
 
     @Override
     public void trackMail(String uniqueIdentifier) {
         Optional<EmailTrackRequest> dbEntry = emailTrackRepository.findById(Long.parseLong(uniqueIdentifier));
         dbEntry.ifPresent(entry -> {
-            String trackingEmail = entry.getTrackEmail();
-            String body = "Your Email with subject `"+ entry.getSubject()+ "` to " + entry.getTo() + " is being opened now.";
-            try {
-                sendMail(mailProperties.getUsername(), trackingEmail,"Your Email was opened", body, new String[0] , new String[0], null);
-            } catch (MessagingException e) {
-                throw new RuntimeException(e);
+            if(!entry.getIsOpened()){
+                String trackingEmail = entry.getTrackEmail();
+                String body = entry.getTo() + " just opened your email with the subject '" + entry.getSubject() +"'.";
+                try {
+                    sendMail(mailProperties.getUsername(), trackingEmail,"Your email was just read", body, new String[0] , new String[0], null);
+                    entry.setIsOpened(true);
+                    emailTrackRepository.save(entry);
+                } catch (MessagingException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
     }
