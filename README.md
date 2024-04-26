@@ -1,5 +1,5 @@
 <div align='center'>
-<img width="300" height="300" alt="icon" src=".\assets\envoy512.png">
+<img width="300" style="border-radius: 50%; overflow: hidden;" height="300" alt="icon" src="https://api-envoy.s3.ap-south-1.amazonaws.com/envoy1024.png">
 </div>
 <br>
 
