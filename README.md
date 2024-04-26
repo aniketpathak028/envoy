@@ -136,4 +136,4 @@ Welcome to Envoy - your all-in-one email management solution to schedule and tra
 <!-- License -->
 ## Copyright & License
 
-Code and documentation Copyright (c) [Apache-2.0](LICENSE.txt) © 2024 Envoy.
+Code and documentation Copyright (c) [Apache-2.0](LICENSE) © 2024 Envoy.
