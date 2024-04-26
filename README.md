@@ -1,39 +1,79 @@
 <div align='center'>
-<img width="300" height="300" alt="icon" src="https://github.com/dorbus/flexboard/assets/74519511/27b6f40f-6b4a-4ea3-b8c6-ed56b7fda529">
+<img width="300" height="300" alt="icon" src=".\assets\envoy512.png">
 </div>
 <br>
 
 # Envoy
 
-A versatile email management tool, Envoy is designed to streamline your email communication processes. Built on the robust Java Spring Boot framework, Envoy offers a comprehensive suite of APIs to enhance your emailing experience. Whether you need to send routine emails, schedule messages for future delivery, or track email engagement, Envoy has you covered.
+Welcome to Envoy - your all-in-one email management solution to schedule and track emails! 💌
 
-## API Reference
+## API
 
-#### Get all items
-
-```http
-  GET /api/items
-```
-
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | **Required**. Your API key |
-
-#### Get item
+#### Base URL
 
 ```http
-  GET /api/items/${id}
+  https://envoy-api.up.railway.app
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
+#### Send a Normal Email
 
-#### add(num1, num2)
+```http
+  POST /api/v1/send
+```
 
-Takes two numbers and returns the sum.
+| Parameter    | Type     | Description                                               |
+|:-------------|:---------|:----------------------------------------------------------|
+| `to`         | `email`  | **Required**. Recipient's email address                   |
+| `subject`    | `string` | **Required**. Subject                                     |
+| `body`       | `string` | **Required**. Body                                        |
+| `cc`         | `array`  | **Optional**. Cc list                                     |
+| `bcc`        | `array`  | **Optional**. Bcc list                                    |
+| `trackEmail` | `email`  | **Optional**. Email address to recieve track notification |
 
+#### Example Request
 
+```json
+{
+  "to": "recipient@example.com",
+  "subject": "Your Subject Here",
+  "body": "Your Email Body Here",
+  "cc": ["cc1@example.com", "cc2@example.com"],
+  "bcc": ["bcc1@example.com", "bcc2@example.com"],
+  "trackEmail": "notification@example.com"
+}
+```
+
+#### Schedule an Email
+
+```http
+  POST api/v1/schedule
+```
+
+| Parameter    | Type     | Description                                               |
+|:-------------|:---------|:----------------------------------------------------------|
+| `to`         | `email`  | **Required**. Recipient's email address                   |
+| `subject`    | `string` | **Required**. Subject                                     |
+| `body`       | `string` | **Required**. Body                                        |
+| `dateTime`   | `time`   | **Required**. Scheduled time                              |
+| `zoneId`     | `string` | **Required**. Sender's zone id                            |
+| `cc`         | `array`  | **Optional**. Cc list                                     |
+| `bcc`        | `array`  | **Optional**. Bcc list                                    |
+| `trackEmail` | `email`  | **Optional**. Email address to recieve track notification |
+
+#### Example Request
+
+```json
+{
+    "to": "recipient@example.com",
+    "subject": "Meeting Reminder",
+    "body": "Don't forget our meeting tomorrow!",
+    "dateTime": "2024-04-27T10:00:00Z",
+    "zoneId": "America/New_York",
+    "cc": ["cc1@example.com", "cc2@example.com"],
+    "bcc": ["bcc@example.com"],
+    "trackEmail": "track@example.com"
+}
+```
 
 ## Project Created & Maintained By
 
