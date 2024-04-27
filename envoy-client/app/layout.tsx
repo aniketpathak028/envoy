@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Envoy",
-  description: "",
+  description: "Email management tool to send, schedule, track E-mails",
 };
 
 export default function RootLayout({
