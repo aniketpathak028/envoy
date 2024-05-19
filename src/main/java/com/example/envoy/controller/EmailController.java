@@ -101,7 +101,7 @@ public class EmailController {
 
     @GetMapping("/api/v1/track")
     public ResponseEntity<byte[]> getImage(@RequestParam("id") String uniqueIdentifier) throws IOException {
-        String imageUrl = "https://sohamdutta-portfolio.s3.ap-south-1.amazonaws.com/opengraph-image.jpg"; //should be changed later
+        String imageUrl = "https://api-envoy.s3.ap-south-1.amazonaws.com/tracking.png"; //should be changed later
 
         emailService.trackMail(uniqueIdentifier);
 
